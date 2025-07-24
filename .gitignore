@@ -1,0 +1,76 @@
+# Build artifacts
+*.o
+*.a
+*.so
+*.dylib
+hvd
+hv
+
+# Object files
+*.obj
+*.elf
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Temporary files
+*~
+*.tmp
+*.temp
+*.swp
+*.swo
+*#
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-*
+.atom/
+.brackets.json
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Log files
+*.log
+logs/
+
+# Configuration files with sensitive data
+*.conf
+config/local/
+
+# Test files
+test_*
+*_test
+
+# Documentation build
+docs/_build/
+docs/build/
+
+# Package files
+*.tar.gz
+*.zip
+*.deb
+*.rpm
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Core dumps
+core
+core.*
+
+# FreeBSD specific
+*.core
+*.pid 

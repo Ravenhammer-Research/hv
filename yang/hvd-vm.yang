@@ -1,0 +1,142 @@
+module hvd-vm {
+  yang-version 1.1;
+  namespace "urn:hvd:vm";
+  prefix hvd-vm;
+
+  organization "HVD Project";
+  contact "hvd@example.com";
+  description "Virtual machine configuration for HVD";
+
+  revision 2025-01-01 {
+    description "Initial version";
+  }
+
+  typedef vm-state {
+    type enumeration {
+      enum stopped;
+      enum running;
+      enum paused;
+      enum error;
+    }
+    description "Virtual machine state";
+  }
+
+  typedef disk-type {
+    type enumeration {
+      enum zvol;
+      enum iscsi;
+    }
+    description "Disk type";
+  }
+
+  container vm {
+    description "Virtual machine configuration container";
+    
+    list virtual-machine {
+      key "name";
+      description "The list of configured virtual machines";
+      
+      leaf name {
+        type string {
+          length "1..64";
+        }
+        description "The name of the virtual machine";
+      }
+      
+      leaf cpu {
+        type uint8 {
+          range "1..32";
+        }
+        default 1;
+        description "Number of CPU cores allocated to the VM";
+      }
+      
+      leaf memory {
+        type uint32 {
+          range "64..1048576";
+        }
+        units "megabytes";
+        default 512;
+        description "Amount of memory allocated to the VM in megabytes";
+      }
+      
+      leaf boot-device {
+        type string {
+          length "1..64";
+        }
+        description "Primary boot device name";
+      }
+      
+      leaf state {
+        type vm-state;
+        default stopped;
+        description "Current state of the virtual machine";
+      }
+      
+      list disk {
+        key "name";
+        description "The list of disks attached to the VM";
+        
+        leaf name {
+          type string {
+            length "1..64";
+          }
+          description "The name of the disk";
+        }
+        
+        leaf type {
+          type disk-type;
+          mandatory true;
+          description "The type of disk";
+        }
+        
+        leaf path {
+          type string {
+            length "1..512";
+          }
+          description "The path to the disk device";
+        }
+        
+        leaf size {
+          type uint64;
+          units "gigabytes";
+          description "Size of the disk in gigabytes (for zvol creation)";
+        }
+        
+        leaf iscsi-target {
+          type string {
+            length "1..512";
+          }
+          description "iSCSI target specification (for iSCSI disks)";
+        }
+      }
+      
+      list network {
+        key "name";
+        description "The list of network interfaces attached to the VM";
+        
+        leaf name {
+          type string {
+            length "1..64";
+          }
+          description "The name of the network interface";
+        }
+        
+        leaf network-name {
+          type string {
+            length "1..64";
+          }
+          mandatory true;
+          description "The name of the network this interface connects to";
+        }
+        
+        leaf mac-address {
+          type string {
+            pattern '^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$';
+          }
+          description "MAC address for the network interface";
+        }
+      }
+    }
+  }
+} 

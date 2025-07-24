@@ -1,0 +1,90 @@
+module hvd-network {
+  yang-version 1.1;
+  namespace "urn:hvd:network";
+  prefix hvd-net;
+
+  organization "HVD Project";
+  contact "hvd@example.com";
+  description "Network configuration for HVD";
+
+  revision 2025-01-01 {
+    description "Initial version";
+  }
+
+  typedef network-type {
+    type enumeration {
+      enum bridge;
+    }
+    description "Network type";
+  }
+
+  container networks {
+    description "Network configuration container";
+    
+    list network {
+      key "name";
+      description "The list of configured networks";
+      
+      leaf name {
+        type string {
+          length "1..64";
+        }
+        description "The name of the network";
+      }
+      
+      leaf type {
+        type network-type;
+        default bridge;
+        description "The type of network";
+      }
+      
+      leaf fib-id {
+        type uint32 {
+          range "0..255";
+        }
+        default 0;
+        description "FIB (routing table) number for this network";
+      }
+      
+      leaf physical-interface {
+        type string {
+          length "1..64";
+        }
+        description "Physical interface to attach to the bridge (optional)";
+      }
+      
+      leaf bridge-name {
+        type string {
+          length "1..64";
+        }
+        description "Name of the bridge interface";
+      }
+      
+      list tap-interfaces {
+        key "name";
+        description "The list of tap interfaces connected to this network";
+        
+        leaf name {
+          type string {
+            length "1..64";
+          }
+          description "The name of the tap interface";
+        }
+        
+        leaf vm-name {
+          type string {
+            length "1..64";
+          }
+          description "The name of the VM this tap interface belongs to";
+        }
+        
+        leaf fib-id {
+          type uint32 {
+            range "0..255";
+          }
+          description "FIB ID inherited from the network";
+        }
+      }
+    }
+  }
+} 
