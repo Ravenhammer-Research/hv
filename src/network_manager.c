@@ -224,11 +224,12 @@ int network_set_fib(const char *network_name, uint32_t fib_id) {
     
     // Update bridge FIB via netd
     char cmd[512];
-    char response[MAX_RESPONSE_LEN];
     snprintf(cmd, sizeof(cmd), "set interface %s fib %u", network.bridge_name, fib_id);
-    
-    // This would use the netd integration function
-    // For now, we'll just update the configuration
+    char response[MAX_RESPONSE_LEN];
+    if (netd_send_command(cmd, response, sizeof(response)) != 0) {
+        HVD_ERROR("Failed to update FIB for bridge %s", network.bridge_name);
+        return -1;
+    }
     if (xml_save_network_config(&network) != 0) {
         HVD_ERROR("Failed to save network configuration for %s", network_name);
         return -1;
@@ -255,11 +256,12 @@ int network_set_physical_interface(const char *network_name, const char *physica
     
     // Add physical interface to bridge via netd
     char cmd[512];
-    char response[MAX_RESPONSE_LEN];
     snprintf(cmd, sizeof(cmd), "set interface %s bridge %s", physical_interface, network.bridge_name);
-    
-    // This would use the netd integration function
-    // For now, we'll just update the configuration
+    char response[MAX_RESPONSE_LEN];
+    if (netd_send_command(cmd, response, sizeof(response)) != 0) {
+        HVD_ERROR("Failed to add physical interface %s to bridge %s", physical_interface, network.bridge_name);
+        return -1;
+    }
     if (xml_save_network_config(&network) != 0) {
         HVD_ERROR("Failed to save network configuration for %s", network_name);
         return -1;

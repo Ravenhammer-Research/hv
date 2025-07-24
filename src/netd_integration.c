@@ -47,7 +47,7 @@
  * @param resp_len Size of response buffer
  * @return 0 on success, -1 on failure
  */
-static int netd_send_command(const char *cmd, char *response, size_t resp_len) {
+int netd_send_command(const char *cmd, char *response, size_t resp_len) {
     int sock = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sock < 0) {
         HVD_ERROR("Failed to create socket for netd communication: %s", strerror(errno));

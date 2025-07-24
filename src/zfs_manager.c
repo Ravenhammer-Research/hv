@@ -45,6 +45,11 @@
  * @return 0 on success, -1 on failure
  */
 int zfs_create_dataset(const char *dataset, const char *type) {
+    // Use the type parameter to determine dataset type
+    zfs_type_t zfs_type = ZFS_TYPE_FILESYSTEM;
+    if (type && strcmp(type, "volume") == 0) {
+        zfs_type = ZFS_TYPE_VOLUME;
+    }
     libzfs_handle_t *zfs_hdl = libzfs_init();
     if (!zfs_hdl) {
         HVD_ERROR("Failed to initialize libzfs");
@@ -59,7 +64,7 @@ int zfs_create_dataset(const char *dataset, const char *type) {
         return 0;
     }
     
-    int result = zfs_create(zfs_hdl, dataset, ZFS_TYPE_FILESYSTEM, NULL);
+    int result = zfs_create(zfs_hdl, dataset, zfs_type, NULL);
     if (result != 0) {
         HVD_ERROR("Failed to create ZFS dataset %s: %s", dataset, libzfs_error_description(zfs_hdl));
         libzfs_fini(zfs_hdl);

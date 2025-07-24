@@ -153,6 +153,7 @@ int xml_load_vm_config(const char *vm_name, vm_config_t *vm);
 int xml_save_network_config(const network_def_t *network);
 int xml_load_network_config(const char *network_name, network_def_t *network);
 
+int netd_send_command(const char *cmd, char *response, size_t resp_len);
 int netd_configure_bridge(const char *bridge_name, uint32_t fib_id);
 int netd_configure_tap(const char *tap_name, const char *bridge_name, uint32_t fib_id);
 int netd_remove_tap(const char *tap_name);

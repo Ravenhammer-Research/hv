@@ -126,7 +126,16 @@ static int handle_set_command(char *cmd, char *response, size_t resp_len) {
  * @return 0 on success, -1 on failure
  */
 static int handle_set_vm_command(char *cmd, char *response, size_t resp_len) {
-    char *vm_name = strtok(NULL, " \t\n");
+    // Parse the command to extract VM name and parameters
+    char *vm_name = strtok(cmd, " \t\n");
+    if (!vm_name) {
+        snprintf(response, resp_len, "ERROR: Missing VM name\n");
+        return -1;
+    }
+    
+    // Skip "set" and "vm" tokens
+    vm_name = strtok(NULL, " \t\n"); // "vm"
+    vm_name = strtok(NULL, " \t\n"); // actual VM name
     if (!vm_name) {
         snprintf(response, resp_len, "ERROR: Missing VM name\n");
         return -1;
@@ -188,7 +197,16 @@ static int handle_set_vm_command(char *cmd, char *response, size_t resp_len) {
  * @return 0 on success, -1 on failure
  */
 static int handle_set_network_command(char *cmd, char *response, size_t resp_len) {
-    char *network_name = strtok(NULL, " \t\n");
+    // Parse the command to extract network name and parameters
+    char *network_name = strtok(cmd, " \t\n");
+    if (!network_name) {
+        snprintf(response, resp_len, "ERROR: Missing network name\n");
+        return -1;
+    }
+    
+    // Skip "set" and "network" tokens
+    network_name = strtok(NULL, " \t\n"); // "network"
+    network_name = strtok(NULL, " \t\n"); // actual network name
     if (!network_name) {
         snprintf(response, resp_len, "ERROR: Missing network name\n");
         return -1;
@@ -238,7 +256,15 @@ static int handle_set_network_command(char *cmd, char *response, size_t resp_len
  * @return 0 on success, -1 on failure
  */
 static int handle_show_command(char *cmd, char *response, size_t resp_len) {
-    char *object = strtok(NULL, " \t\n");
+    // Parse the command to extract object type and name
+    char *object = strtok(cmd, " \t\n");
+    if (!object) {
+        snprintf(response, resp_len, "ERROR: Missing object type\n");
+        return -1;
+    }
+    
+    // Skip "show" token
+    object = strtok(NULL, " \t\n"); // actual object type
     if (!object) {
         snprintf(response, resp_len, "ERROR: Missing object type (vm|network)\n");
         return -1;
@@ -326,7 +352,15 @@ static int handle_show_command(char *cmd, char *response, size_t resp_len) {
  * @return 0 on success, -1 on failure
  */
 static int handle_create_command(char *cmd, char *response, size_t resp_len) {
-    char *object = strtok(NULL, " \t\n");
+    // Parse the command to extract object type and parameters
+    char *object = strtok(cmd, " \t\n");
+    if (!object) {
+        snprintf(response, resp_len, "ERROR: Missing object type\n");
+        return -1;
+    }
+    
+    // Skip "create" token
+    object = strtok(NULL, " \t\n"); // actual object type
     if (!object) {
         snprintf(response, resp_len, "ERROR: Missing object type (vm|network)\n");
         return -1;
@@ -398,7 +432,15 @@ static int handle_create_command(char *cmd, char *response, size_t resp_len) {
  * @return 0 on success, -1 on failure
  */
 static int handle_destroy_command(char *cmd, char *response, size_t resp_len) {
-    char *object = strtok(NULL, " \t\n");
+    // Parse the command to extract object type and name
+    char *object = strtok(cmd, " \t\n");
+    if (!object) {
+        snprintf(response, resp_len, "ERROR: Missing object type\n");
+        return -1;
+    }
+    
+    // Skip "destroy" token
+    object = strtok(NULL, " \t\n"); // actual object type
     if (!object) {
         snprintf(response, resp_len, "ERROR: Missing object type (vm|network)\n");
         return -1;
@@ -438,7 +480,15 @@ static int handle_destroy_command(char *cmd, char *response, size_t resp_len) {
  * @return 0 on success, -1 on failure
  */
 static int handle_start_command(char *cmd, char *response, size_t resp_len) {
-    char *vm_name = strtok(NULL, " \t\n");
+    // Parse the command to extract VM name
+    char *vm_name = strtok(cmd, " \t\n");
+    if (!vm_name) {
+        snprintf(response, resp_len, "ERROR: Missing VM name\n");
+        return -1;
+    }
+    
+    // Skip "start" token
+    vm_name = strtok(NULL, " \t\n"); // actual VM name
     if (!vm_name) {
         snprintf(response, resp_len, "ERROR: Missing VM name\n");
         return -1;
@@ -461,7 +511,15 @@ static int handle_start_command(char *cmd, char *response, size_t resp_len) {
  * @return 0 on success, -1 on failure
  */
 static int handle_stop_command(char *cmd, char *response, size_t resp_len) {
-    char *vm_name = strtok(NULL, " \t\n");
+    // Parse the command to extract VM name
+    char *vm_name = strtok(cmd, " \t\n");
+    if (!vm_name) {
+        snprintf(response, resp_len, "ERROR: Missing VM name\n");
+        return -1;
+    }
+    
+    // Skip "stop" token
+    vm_name = strtok(NULL, " \t\n"); // actual VM name
     if (!vm_name) {
         snprintf(response, resp_len, "ERROR: Missing VM name\n");
         return -1;
@@ -484,7 +542,15 @@ static int handle_stop_command(char *cmd, char *response, size_t resp_len) {
  * @return 0 on success, -1 on failure
  */
 static int handle_list_command(char *cmd, char *response, size_t resp_len) {
-    char *object = strtok(NULL, " \t\n");
+    // Parse the command to extract object type
+    char *object = strtok(cmd, " \t\n");
+    if (!object) {
+        snprintf(response, resp_len, "ERROR: Missing object type\n");
+        return -1;
+    }
+    
+    // Skip "list" token
+    object = strtok(NULL, " \t\n"); // actual object type
     if (!object) {
         snprintf(response, resp_len, "ERROR: Missing object type (vm|network)\n");
         return -1;
